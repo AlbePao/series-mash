@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
   App,
-  Panel,
+  Views,
   View,
   Statusbar,
-  Page,
-  Navbar,
-  Block,
+  Toolbar,
+  Link,
 } from 'framework7-react';
 
 import cordovaApp from '../js/cordova-app';
@@ -51,21 +50,40 @@ class AppComponent extends Component {
   render() {
     return (
       <App params={this.state.f7params}>
-        {/* Status bar overlay for fullscreen mode */}
         <Statusbar />
+        <Views tabs>
+          <View className="safe-areas" id="discover" url="/home/" tab main tabActive />
+          <View className="safe-areas" id="episodes" url="/episodes/" tab />
+          <View className="safe-areas" id="my-shows" url="/my-shows/" tab />
+          <View className="safe-areas" id="profile" url="/profile/" tab />
 
-        {/* Left panel with cover effect */}
-        <Panel left cover themeDark>
-          <View>
-            <Page>
-              <Navbar title="Left Panel"/>
-              <Block>Left panel content goes here</Block>
-            </Page>
-          </View>
-        </Panel>
-
-        {/* Your main view, should have "view-main" class */}
-        <View main className="safe-areas" url="/" />
+          <Toolbar tabbar labels position="bottom">
+            <Link
+              tabLink="#discover"
+              text="Discover"
+              iconIos="f7:search"
+              iconMd="material:search"
+            />
+            <Link
+              tabLink="#episodes"
+              text="Episodes"
+              iconIos="f7:favorites"
+              iconMd="material:view_list"
+            />
+            <Link
+              tabLink="#my-shows"
+              text="My Shows"
+              iconIos="f7:desktop"
+              iconMd="material:personal_video"
+            />
+            <Link
+              tabLink="#profile"
+              text="Profile"
+              iconIos="f7:person"
+              iconMd="material:person"
+            />
+          </Toolbar>
+        </Views>
       </App>
     );
   }
