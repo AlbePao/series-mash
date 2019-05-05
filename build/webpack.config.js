@@ -1,12 +1,16 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReplacePlugin = require('webpack-plugin-replace');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const dotenv = require('dotenv');
 const path = require('path');
+
+dotenv.config();
 
 function resolvePath(dir) {
   return path.join(__dirname, '..', dir);
@@ -188,5 +192,11 @@ module.exports = {
         to: resolvePath(isCordova ? 'cordova/www/static' : 'www/static'),
       },
     ]),
+    new ReplacePlugin({
+      include: 'src/js/constants.js',
+      values: {
+        'API_KEY_ENV': process.env.API_KEY,
+      },
+    })
   ],
 };
