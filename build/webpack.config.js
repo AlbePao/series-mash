@@ -5,7 +5,7 @@ const ReplacePlugin = require('webpack-plugin-replace');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const dotenv = require('dotenv');
 const path = require('path');
@@ -29,6 +29,8 @@ module.exports = {
     path: resolvePath(isCordova ? 'cordova/www' : 'www'),
     filename: 'js/app.js',
     publicPath: '',
+    hotUpdateChunkFilename: 'hot/hot-update.js',
+    hotUpdateMainFilename: 'hot/hot-update.json',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
@@ -46,6 +48,11 @@ module.exports = {
     watchOptions: {
       poll: 1000,
     },
+  },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      sourceMap: true,
+    })],
   },
   module: {
     rules: [
@@ -148,16 +155,6 @@ module.exports = {
       'process.env.TARGET': JSON.stringify(target),
     }),
     ...(env === 'production' ? [
-      // Production only plugins
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          compress: {
-            warnings: false,
-          },
-        },
-        sourceMap: true,
-        parallel: true,
-      }),
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
           safe: true,
@@ -197,6 +194,6 @@ module.exports = {
       values: {
         'API_KEY_ENV': process.env.API_KEY,
       },
-    })
+    }),
   ],
 };
