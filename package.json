@@ -26,6 +26,7 @@
         "cordova-plugin-statusbar",
         "cordova-plugin-keyboard",
         "cordova-plugin-splashscreen",
+        "cordova-plugin-screen-orientation",
         "cordova-plugin-wkwebview-engine"
       ]
     },
